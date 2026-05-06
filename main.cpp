@@ -246,6 +246,20 @@ public:
 		}
 	}
 	
+	// optional (textures)
+	void add_texture(const char* filename) {
+		int w, h, c;
+		unsigned char* tex = stbi_load(filename, &w, &h, &c, 3);
+		texW.push_back(w);
+		texH.push_back(h);
+		std::vector<double> texture(w * h * 3);
+		for (int i = 0; i < w * h * 3; i++) {
+			texture[i] = std::pow(tex[i] / 255.0, 2.2);
+		}
+
+		textures.push_back(texture);
+	}
+	
 
 	// TODO ray-mesh intersection (labs 3 and 4)
 	bool intersect(const Ray& ray, Vector& P, double& t, Vector& N) const {
@@ -264,6 +278,10 @@ public:
 	std::vector<Vector> normals;
 	std::vector<Vector> uvs;
 	std::vector<Vector> vertexcolors;
+	
+	// optional (textures)
+	std::vector< std::vector<double> > textures;
+	std::vector< int > texW, texH;
 };
 
 
